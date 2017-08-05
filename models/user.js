@@ -78,6 +78,10 @@ var UserSchema = new Schema({
         type: String,
         required: false,
         default: ""
+    },
+    colors: {
+        type: Array,
+        required: true
     }
 });
 
@@ -190,6 +194,17 @@ UserSchema.statics.register = function(username, password, app, callback, OAuthI
     var Schema = this;
 
     function continueWithRegistration() {
+        const INIT_NUM = 2;
+        const DEFAULT_COLOURS = ["#FFFFFF", "#E4E4E4", "#888888", "#222222", "#FFA7D1", "#E50000", "#E59500", "#A06A42", "#E5D900", "#94E044", "#02BE01", "#00D3DD", "#0083C7", "#0000EA", "#CF6EE4", "#820080"];
+        const colors = [];
+        for (var i = 0; i < INIT_NUM; ++i) {
+            const j = Math.floor(Math.random() * DEFAULT_COLOURS.length);
+            var x = DEFAULT_COLOURS[0];
+            DEFAULT_COLOURS[0] = DEFAULT_COLOURS[j];
+            DEFAULT_COLOURS[j] = x;
+            colors.push(DEFAULT_COLOURS.shift());
+        }
+
         // ghetto af boi
         let newUser = Schema({
             name: username,
@@ -199,7 +214,8 @@ UserSchema.statics.register = function(username, password, app, callback, OAuthI
             admin: false,
             isOauth: !!OAuthID,
             OAuthID: OAuthID,
-            OAuthName: OAuthName
+            OAuthName: OAuthName,
+            colors: colors
         });
         // Save the user
         newUser.save(function(err) {

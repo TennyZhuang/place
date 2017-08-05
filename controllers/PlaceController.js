@@ -36,3 +36,10 @@ exports.getAPITimer = (req, res, next) => {
     }
     return res.json(getTimerPayload(req.user));
 };
+
+exports.getColors = (req, res, next) => {
+    return res.json({
+        success: true,
+        colors: req.user.colors
+    });
+}

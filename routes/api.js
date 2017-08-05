@@ -79,6 +79,7 @@ function APIRouter(app) {
     router.post("/place", requireUser, PlaceController.postAPIPixel);
 
     router.get("/timer", requireUser, PlaceController.getAPITimer);
+    router.get("/colors", requireUser, PlaceController.getColors);
 
     router.get("/online", function(req, res, next) {
         return res.json({

@@ -172,7 +172,7 @@ var place = {
         this.placeTimer = $(this.colourPaletteElement).children("#place-timer");
         $(this.placeTimer).on("click", "#notify-me", () => this.handleNotifyMeClick());
         let app = this;
-        $(this.colourPaletteElement).on("click", ".colour-option", function() {
+        $(this.colourPaletteElement).on("click", ".colour-had", function() {
             let colourID = parseInt($(this).data("colour"));
             if(colourID) app.selectColour(colourID);
         });
@@ -443,10 +443,24 @@ var place = {
     setupColours: function() {
         $(this.colourPaletteElement).remove(".colour-option");
         this.colourPaletteOptionElements = [];
-        this.DEFAULT_COLOURS.forEach((colour, index) => {
-            let elem = $("<div class=\"colour-option" + (colour.toLowerCase() == "#ffffff" ? " is-white" : "") + "\" style=\"background-color: " + colour + ";\" data-colour=\"" + (index + 1) + "\"></div>").appendTo(this.colourPaletteElement)[0];
-            this.colourPaletteOptionElements.push(elem);
-        });
+
+        const that = this;
+        function setup(colors) {
+            that.DEFAULT_COLOURS.forEach((colour, index) => {
+                const had = colors.indexOf(colour) !== -1;
+                let elem = $("<div class=\"colour-option" + (had ? " colour-had" : "") + (colour.toLowerCase() == "#ffffff" ? " is-white" : "") + "\" style=\"background-color: " + colour + ";" + (had ? "" : "cursor: not-allowed;") + "\" data-colour=\"" + (index + 1) + "\"></div>").appendTo(that.colourPaletteElement)[0];
+                that.colourPaletteOptionElements.push(elem);
+            });
+        }
+
+        $.get('/api/colors').done((data) => {
+            console.log(data);
+            if (!data.success) {
+                setup([]);
+            } else {
+                setup(data.colors);
+            }
+        }).fail((err) => setup([]));
     },
 
     handleResize: function() {
