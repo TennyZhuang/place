@@ -901,6 +901,16 @@ var place = {
                 popover.find("#pixel-data-time").attr("title", new Date(data.pixel.modified).toLocaleString());
                 popover.find("#pixel-data-x").text(x.toLocaleString());
                 popover.find("#pixel-data-y").text(y.toLocaleString());
+
+                $("#logo-section").hide();
+                data.things.forEach(function(thing) {
+	            $("#logo-section").show();
+                    $("#logo-desc").text(thing.img_desc);
+                    $("#logo-desc").attr("href", thing.img_detail_url);
+                    $("#logo-conf").text("confidence: " + thing.confidence);
+                    $("#logo-img").attr("src", thing.img_url);
+                });
+
                 if(hasUser) {
                     var userInfoCtn = popover.find(".user-info");
                     userInfoCtn.show();
