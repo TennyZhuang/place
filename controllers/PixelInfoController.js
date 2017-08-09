@@ -1,4 +1,22 @@
-const Pixel = require('../models/pixel')
+const Pixel = require('../models/pixel');
+
+
+const things = [
+    {
+        img_url: 'https://i.loli.net/2017/08/09/598a9011c1f3c.png',
+        img_desc: 'microsoft',
+        img_pos: [20, 20, 50, 50],
+        img_detail_url: 'https://www.microsoft.com/',
+        confidence: 0.8523550916,
+    },
+    {
+        img_url: 'https://i.loli.net/2017/08/09/598a9011c1f3c.png',
+        img_desc: 'microsoft',
+        img_pos: [60, 80, 220, 250],
+        img_detail_url: 'https://www.microsoft.com/',
+        confidence: 0.9124324456,
+    },
+];
 
 exports.getAPIPixelInfo = (req, res, next) => {
     function fail(err) {
@@ -29,15 +47,10 @@ exports.getAPIPixelInfo = (req, res, next) => {
                 .then((info) => {res.json({
                     success: true, 
                     pixel: info,
-                    things: [
-                        {
-                            img_url: 'https://i.loli.net/2017/08/09/598a9011c1f3c.png',
-                            img_desc: 'microsoft',
-                            img_pos: [20, 20, 50, 50],
-                            img_detail_url: 'https://www.microsoft.com/',
-                            confidence: 0.8523550916,
-                        }
-                    ]
+                    things: things.filter((t) => {
+                        const p = t.img_pos;
+                        return p[0] <= req.query.x && p[1] <= req.query.y && p[2] >= req.query.x && p[3] >= req.query.y;
+                    }),
                 })})
                 .catch((err) => fail(err));
         })
