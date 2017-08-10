@@ -777,7 +777,7 @@ var place = {
                 $(this.placeTimer).children("span").html("You may place again in <strong>" + formattedTime + "</strong>." + (shouldShowNotifyButton ? " <a href=\"#\" id=\"notify-me\">Notify me</a>." : ""));
                 return;
             } else {
-                this.notificationHandler.sendNotification("Place 2.0", "You may now place!");
+                this.notificationHandler.sendNotification("board", "You may now place!");
             }
         }
         if(this.secondTimer) clearInterval(this.secondTimer);
