@@ -137,7 +137,7 @@ module.exports = function(passport, app) {
                 clientID: config.oauth.microsoft.clientID,
                 clientSecret: config.oauth.microsoft.clientSecret,
                 callbackURL: config.host + '/auth/microsoft/callback',
-                scope: ['openid']
+                scope: ['openid', 'user.read']
             },
             function(accessToken, refreshToken, profile, done) {
                 OAuthLogin("microsoft", profile.username, profile.id, done);
