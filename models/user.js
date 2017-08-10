@@ -251,6 +251,15 @@ UserSchema.methods.addPixel = function(colour, x, y, app, callback) {
         if (changed) {
             user.lastPlace = new Date();
             user.placeCount++;
+            const REWARD_REQ = 500;
+            if (user.placeCount > 0 && user.placeCount % REWARD_REQ === 0) {
+                const DEFAULT_COLOURS = ["#FFFFFF", "#E4E4E4", "#888888", "#222222", "#FFA7D1", "#E50000", "#E59500", "#A06A42", "#E5D900", "#94E044", "#02BE01", "#00D3DD", "#0083C7", "#0000EA", "#CF6EE4", "#820080"];
+                const colors = DEFAULT_COLOURS.filter((c) => user.colors.indexOf(c) < 0);
+                if (colors.length > 0) {
+                    const ix = Math.floor(Math.random() * colors.length);
+                    user.colors.push(colors[ix]);
+                }
+            }
         }
         user.save(function(err) {
             if (err) return callback(null, {
